@@ -1,6 +1,6 @@
 package seminar;
 
 public enum Names {
-    Ольга, Алексей, Олег, Дмитрий, Ярослав, Роман, Валентин,
-    Евгений, Родион, Татьяна, Ирина, Нина, Иван, Андрей, Михаил;
+    Venor, Alex, Lisa, Dend, Velimir, Ron, Arem,
+    Lana, Margo, Grott, Terra, Olivia, Viktor, Andrew, Mikle;
 }

@@ -40,16 +40,13 @@ public class Main {
     }
 
 }
-       // heroes.add(new Sniper("Vero"));
-       // heroes.add(new Crossbowman("Ron"));
-        //heroes.add(new Mage("Aver"));
-        //heroes.add(new Monk("Atmir"));
-        //heroes.add(new Spearman("Voland"));
-        //heroes.add(new Thief("Roman"));
-        //heroes.add(new Peasant("Ashet"));
-
-       // heroes.forEach(n -> System.out.println(n));
 
 
-    //}
-//}
+    // heroes.add(new Sniper("Vero"));
+    // heroes.add(new Crossbowman("Ron"));
+    //heroes.add(new Mage("Aver"));
+    //heroes.add(new Monk("Atmir"));
+    //heroes.add(new Spearman("Voland"));
+    //heroes.add(new Thief("Roman"));
+    //heroes.add(new Peasant("Ashet"));
+    // heroes.forEach(n -> System.out.println(n));
