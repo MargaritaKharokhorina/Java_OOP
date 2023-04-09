@@ -1,6 +1,9 @@
 package units;
 
+import teams.Team;
+
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public abstract class Shooter extends BaseHero {
@@ -9,32 +12,51 @@ public abstract class Shooter extends BaseHero {
     int accuracy;
 
     public Shooter(int hp, String name, boolean team, int armor, int[] damage, int arrows, int accuracy) {
-        super(hp, name, team, armor, damage);
+        super("Арбалетчик", hp, name, team, armor, damage, 10);
         this.arrows = arrows;
         this.accuracy = accuracy;
     }
 
-    protected void shoot() {
-        System.out.println("Shoot!");
-    }
-
     protected void shoot(BaseHero enemy) {
-        int dmg = new Random().nextInt(damage[0],damage[1]);
+        this.arrows--;
+        int dmg = new Random().nextInt(damage[0], damage[1]);
+        System.out.println(this.getInfo() + " стреляет в " + enemy.getInfo());
         enemy.getDamage(dmg);
-        System.out.println(enemy.getInfo() + " получил(а) урон: " + dmg);
     }
 
-    public void step(ArrayList<BaseHero> enemyTeam) {
-        System.out.println("Ходит " + getInfo());
-        if (hp <= 0 || arrows <= 0) return;
+    protected boolean hasLiveStandPeasant(ArrayList<BaseHero> allyTeam) {
+        for (BaseHero hero : allyTeam) {
+            if (Objects.equals(hero.className, "Крестьянин") && Objects.equals(hero.state, "Stand")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected BaseHero getLivePeasant(ArrayList<BaseHero> allyTeam) {
+        for (BaseHero hero : allyTeam) {
+            if (Objects.equals(hero.className, "Крестьянин") && Objects.equals(hero.state, "Stand")) {
+                return hero;
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public void step() {
+        super.step();
+        if (Objects.equals(state, "Dead")) return;
+        ArrayList<BaseHero> allyTeam = getAllyTeam();
+        ArrayList<BaseHero> enemyTeam = getEnemiesTeam();
+        if (enemyTeam.isEmpty()) return;
+        if (hasLiveStandPeasant(allyTeam)) {
+            this.arrows++;
+            BaseHero peasant = getLivePeasant(allyTeam);
+            peasant.state = "Busy";
+            System.out.println(getInfo() + " берёт стрелу от " + peasant.getInfo());
+        }
+        if (this.arrows <= 0) return;
         BaseHero closestEnemy = findClosestEnemy(enemyTeam);
-        System.out.println("Найден ближайший противник: " + closestEnemy.getInfo());
         shoot(closestEnemy);
     }
 }
-
-
-   // @Override
-   // public void step(){
-       // System.out.println("Shooter");
-

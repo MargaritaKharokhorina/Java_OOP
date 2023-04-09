@@ -1,10 +1,12 @@
 package units;
 
+import teams.Team;
+
 import java.util.ArrayList;
 
 public interface Interface {
-    void step(ArrayList<BaseHero> enemyTeam);
-
     String getInfo();
+
+    void step();
     
 }
