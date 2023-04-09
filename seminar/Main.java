@@ -6,13 +6,8 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        //        printHeader("Порядок ходов");
-
-//        printInitiativeList(getSortedIndexList());
-
-//        printInitiativeList();
-
-startGame();
+        
+        startGame();
 
 }
 
@@ -63,12 +58,10 @@ static void showTeams() {
     printHeader("Команды");
     printHeader("Первая команда");
     for (BaseHero hero : BaseHero.getFirstTeam()) {
-//            if (!Objects.equals(hero.getState(), "Dead"))
         System.out.println(hero);
     }
     printHeader("Вторая команда");
     for (BaseHero hero : BaseHero.getSecondTeam()) {
-//            if (!Objects.equals(hero.getState(), "Dead"))
         System.out.println(hero);
     }
 }
