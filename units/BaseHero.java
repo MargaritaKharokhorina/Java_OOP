@@ -18,7 +18,7 @@ public abstract class BaseHero implements Interface {
     protected static int lastSecondTeamY = 1;
 
     protected int hp;
-    
+
     public int getHp() {
         return hp;
     }
@@ -118,25 +118,19 @@ public abstract class BaseHero implements Interface {
     }
 
     protected void getDamage(int damage) {
-//        System.out.println(this.getInfo() + " получает " + damage + " урона");
+
         if (this.hp - damage > 0) {
             this.hp -= damage;
         } else {
             hp = 0;
             state = "Dead";
-//            System.out.println(this.getInfo() + " умирает");
-//            getAllyTeam().remove(this);
         }
     }
 
     @Override
     public void step() {
         if (Objects.equals(state, "Dead")) return;
-//        String text = "Ходит " + getInfo();
-//        if (this.team)
-//            text += " из первой команды";
-//        else text += " из второй команды";
-//        System.out.println(text);
+
     }
 
     public static PriorityQueue<BaseHero> getInitiativeList() {

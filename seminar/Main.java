@@ -27,8 +27,6 @@ private static void startGame() {
         if (Objects.equals(input, "q")) break;
         View.view();
         turnsCounter++;
-//            System.out.println("Ход №" + turnsCounter);
-//            showTeams();
         teamsMakeTurns();
     }
     View.view();
@@ -60,12 +58,10 @@ private static void showTeams() {
     printHeader("Команды");
     printHeader("Первая команда");
     for (BaseHero hero : BaseHero.getHolyTeam()) {
-//            if (!Objects.equals(hero.getState(), "Dead"))
         System.out.println(hero);
     }
     printHeader("Вторая команда");
     for (BaseHero hero : BaseHero.getDarkTeam()) {
-//            if (!Objects.equals(hero.getState(), "Dead"))
         System.out.println(hero);
     }
 }
