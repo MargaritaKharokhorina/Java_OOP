@@ -4,6 +4,7 @@ import seminar.Spells;
 
 import java.util.ArrayList;
 
+
 public class Monk extends BaseHero {
         protected int mana;
     

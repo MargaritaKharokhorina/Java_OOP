@@ -11,8 +11,8 @@ public abstract class Shooter extends BaseHero {
 
     int accuracy;
 
-    public Shooter(int hp, String name, boolean team, int armor, int[] damage, int arrows, int accuracy) {
-        super("Арбалетчик", hp, name, team, armor, damage, 10);
+    public Shooter(String className, int hp, String name, boolean team, int armor, int[] damage, int arrows, int accuracy) {
+        super(className, hp, name, team, armor, damage, 10);
         this.arrows = arrows;
         this.accuracy = accuracy;
     }
@@ -26,7 +26,7 @@ public abstract class Shooter extends BaseHero {
 
     protected boolean hasLiveStandPeasant(ArrayList<BaseHero> allyTeam) {
         for (BaseHero hero : allyTeam) {
-            if (Objects.equals(hero.className, "Крестьянин") && Objects.equals(hero.state, "Stand")) {
+            if (Objects.equals(hero.className, "Фермер") && Objects.equals(hero.state, "Stand")) {
                 return true;
             }
         }
@@ -35,7 +35,7 @@ public abstract class Shooter extends BaseHero {
 
     protected BaseHero getLivePeasant(ArrayList<BaseHero> allyTeam) {
         for (BaseHero hero : allyTeam) {
-            if (Objects.equals(hero.className, "Крестьянин") && Objects.equals(hero.state, "Stand")) {
+            if (Objects.equals(hero.className, "Фермер") && Objects.equals(hero.state, "Stand")) {
                 return hero;
             }
         }
@@ -53,10 +53,14 @@ public abstract class Shooter extends BaseHero {
             this.arrows++;
             BaseHero peasant = getLivePeasant(allyTeam);
             peasant.state = "Busy";
-            System.out.println(getInfo() + " берёт стрелу от " + peasant.getInfo());
+            // System.out.println(getInfo() + " берет стрелу от " + peasant.getInfo());
         }
         if (this.arrows <= 0) return;
         BaseHero closestEnemy = findClosestEnemy(enemyTeam);
         shoot(closestEnemy);
+    }
+    @Override
+    public String toString() {
+        return super.toString().replace("Статус", "➶: " + arrows + " Статус");
     }
 }

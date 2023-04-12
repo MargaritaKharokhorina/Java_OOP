@@ -1,10 +1,5 @@
 package units;
 
-import seminar.Names;
-import weapons.Weapons;
-import teams.Team;
-
-
 import java.util.*;
 
 public abstract class BaseHero implements Interface {
@@ -16,21 +11,28 @@ public abstract class BaseHero implements Interface {
 
     protected String name;
 
-    protected static int lastFirstTeamX = 0;
-    protected static int lastFirstTeamY = 0;
+    protected static int lastFirstTeamX = 1;
+    protected static int lastFirstTeamY = 1;
 
-    protected static int lastSecondTeamX = 9;
-    protected static int lastSecondTeamY = 0;
+    protected static int lastSecondTeamX = 10;
+    protected static int lastSecondTeamY = 1;
 
     protected int hp;
+    
+    public int getHp() {
+        return hp;
+    }
+
     protected int maxHp;
 
     protected int armor;
     protected int[] damage;
 
-    protected Weapons weapon;
-
     protected Coords position;
+
+    public int[] getCoords() {
+        return new int[]{position.y, position.x};
+    }
 
     protected int initiative;
 
@@ -45,7 +47,7 @@ public abstract class BaseHero implements Interface {
 
     protected static int idCounter = 0;
 
-    protected static ArrayList<BaseHero> allHeroesList = new ArrayList<>();
+    protected static ArrayList<BaseHero> allTeam = new ArrayList<>();
 
     protected String state;
 
@@ -53,13 +55,16 @@ public abstract class BaseHero implements Interface {
         return name;
     }
 
-    protected static ArrayList<BaseHero> firstTeam = new ArrayList<>();
+    protected static ArrayList<BaseHero> holyTeam = new ArrayList<>();
 
-    protected static ArrayList<BaseHero> secondTeam = new ArrayList<>();
+    protected static ArrayList<BaseHero> darkTeam = new ArrayList<>();
 
     @Override
     public String toString() {
-        return this.getInfo() + " Здоровье: " + this.hp + " Броня: " + this.armor + " Инициатива: " + this.initiative + " state: " + this.state;
+        return this.name + " \uD83D\uDC97: " + this.hp + " \uD83D\uDEE1️: " + this.armor + " \uD83C\uDFBF: " +
+                this.initiative + " ⚔️: " + Math.round(Math.abs((damage[0] + damage[1]) / 2)) + " Статус: " + this.state
+                .replace("Dead", "\uD83D\uDC80")
+                .replace("Stand", "\uD83D\uDE42");
     }
 
     public String getPosition() {
@@ -72,10 +77,10 @@ public abstract class BaseHero implements Interface {
         this.name = name;
         if (team) {
             this.position = new Coords(lastFirstTeamX, lastFirstTeamY++);
-            firstTeam.add(this);
+            holyTeam.add(this);
         } else {
             this.position = new Coords(lastSecondTeamX, lastSecondTeamY++);
-            secondTeam.add(this);
+            darkTeam.add(this);
         }
         this.team = team;
         this.armor = armor;
@@ -83,7 +88,7 @@ public abstract class BaseHero implements Interface {
         this.initiative = initiative;
         this.id = idCounter++;
         this.state = "Stand";
-        allHeroesList.add(this);
+        allTeam.add(this);
         initiativeList.add(this);
         count++;
     }
@@ -97,7 +102,8 @@ public abstract class BaseHero implements Interface {
         return count;
     }
 
-    public BaseHero findClosestEnemy(ArrayList<BaseHero> enemyTeam) {
+
+    protected BaseHero findClosestEnemy(ArrayList<BaseHero> enemyTeam) {
         BaseHero closestEnemy = enemyTeam.get(0);
         double distance = Coords.getDistance(this.position, enemyTeam.get(0).position);
         double minDistance = distance;
@@ -111,26 +117,26 @@ public abstract class BaseHero implements Interface {
         return closestEnemy;
     }
 
-    public void getDamage(int damage) {
-        System.out.println(this.getInfo() + " получает " + damage + " урона");
+    protected void getDamage(int damage) {
+//        System.out.println(this.getInfo() + " получает " + damage + " урона");
         if (this.hp - damage > 0) {
             this.hp -= damage;
         } else {
             hp = 0;
             state = "Dead";
-            System.out.println(this.getInfo() + " умирает");
-            getAllyTeam().remove(this);
+//            System.out.println(this.getInfo() + " умирает");
+//            getAllyTeam().remove(this);
         }
     }
 
     @Override
     public void step() {
         if (Objects.equals(state, "Dead")) return;
-        String text = "Ходит " + getInfo();
-        if (this.team)
-            text += " из первой команды";
-        else text += " из второй команды";
-        System.out.println(text);
+//        String text = "Ходит " + getInfo();
+//        if (this.team)
+//            text += " из первой команды";
+//        else text += " из второй команды";
+//        System.out.println(text);
     }
 
     public static PriorityQueue<BaseHero> getInitiativeList() {
@@ -141,8 +147,8 @@ public abstract class BaseHero implements Interface {
         return initiative;
     }
 
-    public static ArrayList<BaseHero> getAllHeroesList() {
-        return allHeroesList;
+    public static ArrayList<BaseHero> getAllTeam() {
+        return allTeam;
     }
 
     public int getId() {
@@ -150,24 +156,39 @@ public abstract class BaseHero implements Interface {
     }
 
     protected ArrayList<BaseHero> getAllyTeam() {
-        if (team) return firstTeam;
-        return secondTeam;
+        if (team) return holyTeam;
+        return darkTeam;
     }
 
     protected ArrayList<BaseHero> getEnemiesTeam() {
-        if (team) return secondTeam;
-        return firstTeam;
+        if (team) return darkTeam;
+        return holyTeam;
     }
 
-    public static ArrayList<BaseHero> getFirstTeam() {
-        return firstTeam;
+    public static ArrayList<BaseHero> filterLiveTeam(ArrayList<BaseHero> team) {
+        ArrayList<BaseHero> liveTeam = new ArrayList<>();
+        for (BaseHero hero : team) {
+            if (!Objects.equals(hero.state, "Dead")) liveTeam.add(hero);
+        }
+        return liveTeam;
     }
 
-    public static ArrayList<BaseHero> getSecondTeam() {
-        return secondTeam;
+    public static ArrayList<BaseHero> getHolyTeam() {
+        return holyTeam;
+    }
+
+    public static ArrayList<BaseHero> getDarkTeam() {
+        return darkTeam;
     }
 
     public String getState() {
         return state;
+    }
+
+    public String getClassIcon() {
+        switch (this.className) {
+            default:
+                return "" + this.className.charAt(0);
+        }
     }
 }
