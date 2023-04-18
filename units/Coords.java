@@ -16,4 +16,12 @@ public class Coords {
     public static double getDistance(Coords coords_1, Coords coords_2){
         return Math.sqrt(Math.pow(coords_1.x - coords_2.x, 2) + Math.pow(coords_1.y - coords_2.y, 2));
     }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 }

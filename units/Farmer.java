@@ -17,6 +17,7 @@ public class Farmer extends BaseHero {
         super.step();
         if (Objects.equals(state, "Dead")) return;
         if (Objects.equals(this.state, "Busy")) {
+            log(getInfo() + " пополнил запасы");
             this.state = "Stand";
         }
 }
